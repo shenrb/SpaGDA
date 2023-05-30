@@ -1,1 +1,1 @@
-The project of spatial transcript distribution prediction.
+The project of gene expression enhancement.
