@@ -17,6 +17,8 @@ Mouse spermatogenesis: (https://www.dropbox.com/s/ygzpj0d0oh67br0/Testis_Slidese
 
 The mouse primary visual cortex (VISp) dataset measured by STARmap is available at (https://www.starmapresources.com/data), that is also available at Zenodo (https://doi.org/10.5281/zenodo.3967291). 
 
+Human non-small-cell lung cancer (NSCLC) SRT dataset: (https://nanostring.com/resources/smi-ffpe-dataset-lung9-rep1-data/).
+
 The snRNA-seq 10x v3 B of BICCN MOP dataset (RRID: SCR_015820) can be accessed via the NeMO archive (RRID: SCR_002001) at accession: (https://assets.nemoarchive.org/dat-ch1nqb7). 
 
 scRNA-seq of preoptic region of mouse hypothalamic: GSE113576 (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE113576). 
@@ -24,6 +26,8 @@ scRNA-seq of preoptic region of mouse hypothalamic: GSE113576 (https://www.ncbi.
 scRNA-seq of mouse testis: GSE112393 (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE112393). 
 
 The AllenVISp dataset (access code: GSE115746) is available at (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE115746), that is also available at Zenodo (https://doi.org/10.5281/zenodo.3967291).
+
+The core atlas of lung cancer – LuCA is available at (https://cellxgene.cziscience.com/collections/edb893ee-4066-4128-9aec-5eb2b03f8287).
 
 # Usage
 Train.py is the main program. 
