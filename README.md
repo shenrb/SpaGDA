@@ -4,7 +4,7 @@ SpaGDA is a unified deep learning-based graph domain adaptation for gene express
 ![figure1](https://user-images.githubusercontent.com/8838722/221451761-1d73e37e-156f-43ee-9d39-7a5306b23540.png)
 
 # Pre-requirements
-All analyses presented in the paper were performed in a workstation with 40 Gb RAM memory, 10 cores of 2.5 GHz Intel Xeon Platinum 8255C CPU, and a Nvidia Tesla V100 GPU with 32 Gb memory. And the following python (v3.9) packages support for DAGCN are required: numpy==1.22.4, pandas==1.4.3, scipy==1.9.0, matplotlib==3.5.3, seaborn==0.11.2, scikit-learn==1.1.2, torch==1.21.1, scanpy==1.9.1, anndata==0.8.0.
+All analyses presented in the paper were performed in a workstation with 40 Gb RAM memory, 10 cores of 2.5 GHz Intel Xeon Platinum 8255C CPU, and a Nvidia Tesla V100 GPU with 32 Gb memory. And the following python (v3.9) packages support for SpaGDA are required: numpy==1.22.4, pandas==1.4.3, scipy==1.9.0, matplotlib==3.5.3, seaborn==0.11.2, scikit-learn==1.1.2, torch==1.21.1, scanpy==1.9.1, anndata==0.8.0.
 
 # Data availability
 The public datasets are freely available as follow. 
