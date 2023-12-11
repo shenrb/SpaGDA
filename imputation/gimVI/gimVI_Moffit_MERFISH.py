@@ -3,7 +3,7 @@
 # ***********************************
 # Version: 0.1.1                    #
 # Author:  rongboshen               #
-# Email:   rongboshen@tencent.com   #
+# Email:   rongboshen2019@gmail.com #
 # Date:    2022.08.17               #
 # ***********************************
 
@@ -15,12 +15,6 @@ import pickle
 import scipy.io as io
 import scanpy as sc
 from anndata import AnnData
-
-'''
-    This script was used to prepare the reference scRNA dataset, and the target spatial dataset.
-    All the datasets without normalization and log1p.
-    As the requirement of gimVI, the scRNA and Spatial dataset use the raw counts.
-'''
 
 # scRNA dataset: Moffit
 genes = pd.read_csv('/data/dataset/hypothalamic_merfish/GSE113576/genes.tsv',sep='\t',header=None)
@@ -76,5 +70,4 @@ tar = ['Endothelial', 'Endothelial', 'Endothelial', 'Astrocytes', 'Immature olig
 
 MERFISH_adata.obs['cell_types'] = MERFISH_meta['Cell_class'].replace(ori, tar).to_list()
 MERFISH_adata.write('data/MERFISH1.h5ad')
-
 
