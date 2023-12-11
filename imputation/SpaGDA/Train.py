@@ -55,8 +55,8 @@ def setup_seed(seed):
 def cv_train(opt, sc_cells_number, st_cells_number, batches, graph_dict_sc, x_sc, graph_dict_st, x_st, x_sc_a, mask, 
     tensor_graph_dict_st, raw_shared_gene, k, v, st_data_ori):
 
-    best_fails = 0
-    best_loss = 0
+    best_fails = 20
+    best_loss = 20
     if opt.model == 'gan':
         model = GANModel(opt)
         model.setup(opt)        # regular setup: loading models for test or continue train, and print networks
