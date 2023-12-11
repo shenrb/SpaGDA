@@ -3,7 +3,7 @@
 # ***********************************
 # Version: 0.1.1                    #
 # Author:  rongboshen               #
-# Email:   shen_rongbo@gzlab.ac.cn  #
+# Email:   rongboshen2019@gmail.com #
 # Date:    2023.03.28               #
 # **********************************#
 
@@ -56,6 +56,8 @@ def cv_train(opt, sc_cells_number, st_cells_number, batches, graph_dict_sc, x_sc
     tensor_graph_dict_st, genes_in_matrix, k, v):
 
     best_std = 0
+    best_loss = 20
+    best_fails = 20
 
     if opt.model == 'gan':
         model = GANModel(opt)
@@ -100,7 +102,7 @@ def cv_train(opt, sc_cells_number, st_cells_number, batches, graph_dict_sc, x_sc
         print('===> End of epoch %d / %d \t Time Taken: %d sec' % (epoch, opt.n_epochs, time.time() - epoch_start_time))
 
 
-        if epoch > 20:
+        if epoch > 30:
             ### Inferencing.
             print('\n===> Start inferencing at Fold %s, Epoch %d'%(k, epoch))
             decoded_st = model.inference(x_st, tensor_graph_dict_st).cpu().numpy()
