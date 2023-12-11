@@ -113,7 +113,7 @@ if __name__ == '__main__':
         model.update_learning_rate()  # update learning rates based on epoch.
         print('===> End of epoch %d / %d \t Time Taken: %d sec' % (epoch, opt.n_epochs, time.time() - epoch_start_time))
 
-        if epoch > 35: # save the best model from the latest five epoch, since the training should converge in the latest epoches.
+        if epoch > 35: # save the best model from the latest five epoch, since the training should converge in the latest epoches and the results are about the same.
             print('\n===> Start inferencing at epoch %d...'%epoch)
             ### Inferencing.
             results = model.inference(x_st, tensor_graph_dict_st).cpu().numpy()
