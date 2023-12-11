@@ -3,7 +3,7 @@
 # ***********************************
 # Version: 0.1.1                    #
 # Author:  rongboshen               #
-# Email:   rongboshen@tencent.com   #
+# Email:   rongboshen2019@gmail.com #
 # Date:    2022.08.17               #
 # ***********************************
 
@@ -15,13 +15,6 @@ import pickle
 import scipy.io as io
 import scanpy as sc
 from anndata import AnnData
-
-'''
-    This script was used to prepare the reference scRNA dataset, and the target spatial dataset.
-    All the datasets were processed by normalization and log1p.
-    scRNA was normalized by a sum of 1e6, spatial was normalized by a sum of mean count_total.
-'''
-
 
 # scRNA dataset: Moffit
 genes = pd.read_csv('/data/dataset/hypothalamic_merfish/GSE113576/genes.tsv',sep='\t',header=None)
