@@ -3,7 +3,7 @@
 # ***********************************
 # Version: 0.1.1                    #
 # Author:  rongboshen               #
-# Email:   shen_rongbo@gzlab.ac.cn  #
+# Email:   rongboshen2019@gmail.com #
 # Date:    2023.03.28               #
 # ***********************************
 
