@@ -53,3 +53,9 @@ The project of SpaGDA for gene expression enhancement.
     lambda_A: Weight for GAN loss
     rec_loss: rec loss type. [l2| l1 ]
 
+# Model saving and loading parameters
+    save_latest_freq: frequency of saving the latest results
+    save_epoch_freq: frequency of saving checkpoints at the end of epochs
+    continue_train: continue training - load the latest model
+    print_freq: batch frequency of printing the loss
+
