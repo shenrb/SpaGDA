@@ -3,7 +3,7 @@
 # ***********************************
 # Version: 0.1.1                    #
 # Author:  rongboshen               #
-# Email:   rongboshen@tencent.com   # rongboshen2019@gmail.com
+# Email:   rongboshen2019@gmail.com # 
 # Date:    2022.07.06               #
 # **********************************#
 
@@ -80,7 +80,7 @@ if __name__ == '__main__':
     print('==> Epochs: %d, Batches: %d, sc_batches: %d, st_batches: %d' %(opt.n_epochs, batches, sc_batches, st_batches))
 
     best = 0
-    setup_seed(1)
+    setup_seed(1) # Warnning: different random seed may generate slight different results.
     model = GANModel(opt)
     model.setup(opt)        # regular setup: loading models for test or continue train, and print networks
 
@@ -113,7 +113,7 @@ if __name__ == '__main__':
         model.update_learning_rate()  # update learning rates based on epoch.
         print('===> End of epoch %d / %d \t Time Taken: %d sec' % (epoch, opt.n_epochs, time.time() - epoch_start_time))
 
-        if epoch > 30:
+        if epoch > 35: # save the best model from the latest five epoch, since the training should converge in the latest epoches.
             print('\n===> Start inferencing at epoch %d...'%epoch)
             ### Inferencing.
             results = model.inference(x_st, tensor_graph_dict_st).cpu().numpy()
@@ -134,4 +134,4 @@ if __name__ == '__main__':
         opt_file.write("Acc for prediction: %.4f"%best)
 
     result_df = pd.DataFrame(best_results, columns=[types_dict[i] for i in range(9)], index=common_st_adata.obs_names.to_list())
-    result_df.to_csv('Results/best_dagcn_prediction_%s.csv'%(time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())))
+    result_df.to_csv('Results/best_spagda_prediction_%s.csv'%(time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())))
