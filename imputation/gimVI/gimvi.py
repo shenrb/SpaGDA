@@ -3,7 +3,7 @@
 # ***********************************
 # Version: 0.1.1                    #
 # Author:  rongboshen               #
-# Email:   rongboshen@tencent.com   #
+# Email:   rongboshen2019@gmail.com #
 # Date:    2022.08.17               #
 # ***********************************
 
@@ -128,12 +128,7 @@ if __name__ == '__main__':
     for i in raw_shared_gene:
         gimVI_SCC[i] = st.spearmanr(MERFISH_data_shared[i], gimVI_imputed[i])[0]
 
-    # Normalization for fair comparsion of RMSE with other methods.
-    #normal_gimVI_imputed = Normal_log1p(gimVI_imputed)
-    #normal_Starmap_data_shared = Normal_log1p(Starmap_data_shared)
-
     gimVI_RMSE = mean_squared_error(MERFISH_data_shared.to_numpy(), gimVI_imputed.to_numpy())
-    #gimVI_RMSE = mean_squared_error(normal_Starmap_data_shared.to_numpy(), normal_gimVI_imputed.to_numpy())
     print("Imputation results of gimVI:")
     print("==> gimVI SCC median: %.4f"%gimVI_SCC.median())
     print("===> gimVI_RMSE: %.4f"%gimVI_RMSE)
