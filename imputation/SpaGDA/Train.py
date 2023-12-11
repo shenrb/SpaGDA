@@ -3,7 +3,7 @@
 # ***********************************
 # Version: 0.1.1                    #
 # Author:  rongboshen               #
-# Email:   rongboshen@tencent.com   # rongboshen2019@gmail.com
+# Email:   rongboshen2019@gmail.com # 
 # Date:    2022.06.27               #
 # **********************************#
 
@@ -55,8 +55,8 @@ def setup_seed(seed):
 def cv_train(opt, sc_cells_number, st_cells_number, batches, graph_dict_sc, x_sc, graph_dict_st, x_st, x_sc_a, mask, 
     tensor_graph_dict_st, raw_shared_gene, k, v, st_data_ori):
 
-    best_pcc = 0
-    best_scc = 0
+    best_fails = 0
+    best_loss = 0
     if opt.model == 'gan':
         model = GANModel(opt)
         model.setup(opt)        # regular setup: loading models for test or continue train, and print networks
@@ -102,25 +102,28 @@ def cv_train(opt, sc_cells_number, st_cells_number, batches, graph_dict_sc, x_sc
         if epoch > 30:
             ### Inferencing.
             print('\n===> Start inferencing at Fold %s, Epoch %d'%(k, epoch))
-            decoded_st = model.inference(x_st, tensor_graph_dict_st).cpu().numpy()
-
-            scc_list = []
-            pcc_list = []
+            decoded_st = model.inference(x_st, tensor_graph_dict_st).cpu()
+            mask_tensor_t = torch.Tensor(np.tile(mask, (x_st.size(dim=0), 1)))
+            Loss_F = torch.nn.MSELoss()
+            loss = Loss_F(mask_tensor_t * decoded_st, x_st)
+            decoded_st = decoded_st.numpy()
+            
+            fails = 0
             for gene in v:
-                idx = list(raw_shared_gene).index(gene)
+                idx = genes_in_matrix.index(gene)
                 if np.std(decoded_st[:, idx]) == 0:
-                    scc_list.append(0)
-                    pcc_list.append(0)
-                else:
-                    scc_list.append(st.spearmanr(st_data_ori[:, idx], decoded_st[:, idx])[0])
-                    pcc_list.append(st.pearsonr(st_data_ori[:, idx], decoded_st[:, idx])[0])
+                    fails += 1
 
-            print('===> SCC and PCC %.4f,  %.4f'%(statistics.median(scc_list), statistics.median(pcc_list)))
-            if statistics.median(scc_list) > best_scc:
-                best_scc = statistics.median(scc_list)
+            print('===> Rec loss %.4f, fails genes %d'%(loss, fails))
+            if fails < best_fails:
+                best_fails = fails
+                best_loss = loss
+                best_results = decoded_st
+            elif fails == best_fails and loss < best_loss:
+                best_loss = loss
                 best_results = decoded_st
 
-    print('===> Best scc: %.4f'%best_scc)
+    print('===> Best loss and fails: %.4f, %d'%(best_loss, best_fails))
 
     return best_results
 
@@ -166,8 +169,8 @@ if __name__ == '__main__':
     batches = max(sc_batches, st_batches)
     print('==> Epochs: %d, Batches: %d, sc_batches: %d, st_batches: %d' %(opt.n_epochs, batches, sc_batches, st_batches))
 
-    setup_seed(6)
-    dagcn_time = []
+    setup_seed(6) # Warnning: different random seed may generate slight different results.
+    runtime_time = []
 
     st_data_ori = np.array(common_st_adata.X)
 
@@ -200,21 +203,22 @@ if __name__ == '__main__':
             Imputed_Genes[gene] = best_results[:, idx]
 
         fold_time = time.time() - start
+        runtime_time.append(fold_time)
         print('==> Fold time: %d sec'%fold_time) 
 
-    Imputed_Genes.to_csv('Results/%s_DAGAN_FiveFolds_%s.csv'%(opt.model, time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())))
+    Imputed_Genes.to_csv('Results/%s_SpaGDA_FiveFolds_%s.csv'%(opt.model, time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())))
 
-    ### DAGCN
+    ### SpaGDA
     st_data_shared = pd.DataFrame(st_data_ori, columns=raw_shared_gene)
 
     # metric
     sp = SP(st_data_shared, Imputed_Genes)
-    print('===> DAGCN median SP: %.4f'%(sp.median(1)))
+    print('===> SpaGDA median SP: %.4f'%(sp.median(1)))
 
-    DAGCN_RMSE = mean_squared_error(st_data_ori, Imputed_Genes.to_numpy())
-    print('===> DAGCN RMSE: %.4f'%(DAGCN_RMSE))
+    SpaGDA_RMSE = mean_squared_error(st_data_ori, Imputed_Genes.to_numpy())
+    print('===> SpaGDA RMSE: %.4f'%(SpaGDA_RMSE))
 
     with open(opt.log_file, 'a') as f:
-        f.write('===> DAGCN median SP: %.4f'%(sp.median(1)))
-        f.write('===> DAGCN RMSE: %.4f'%(DAGCN_RMSE))
+        f.write('===> SpaGDA median SP: %.4f'%(sp.median(1)))
+        f.write('===> SpaGDA RMSE: %.4f'%(SpaGDA_RMSE))
 
