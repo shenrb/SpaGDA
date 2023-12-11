@@ -26,7 +26,7 @@ class BaseOptions():
     def initialize(self, parser):
         """Define the common options that are used in both training and test."""
         # basic parameters
-        parser.add_argument('--name', type=str, default='Moffit', help='name of the experiment. It decides where to store samples and models')
+        parser.add_argument('--name', type=str, default='HPR', help='name of the experiment. It decides where to store samples and models')
         parser.add_argument('--gpu_ids', type=str, default='0', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
         parser.add_argument('--checkpoints_dir', type=str, default='./checkpoints', help='models are saved here')
 
@@ -37,8 +37,8 @@ class BaseOptions():
         parser.add_argument('--gcn_hidden1', type=int, default=40, help='Dim of G-VGAE hidden layer 1.')
         parser.add_argument('--gcn_hidden2', type=int, default=20, help='Dim of G-VGAE hidden layer 2.')
         parser.add_argument('--p_drop', type=float, default=0.2, help='Dropout rate.')
-        parser.add_argument('--sc_neighbors', type=int, default=45, help='K nearest neighbors to create sc graph.')
-        parser.add_argument('--st_neighbors', type=int, default=45, help='K nearest neighbors to create st graph.')
+        parser.add_argument('--sc_neighbors', type=int, default=30, help='K nearest neighbors to create sc graph.')
+        parser.add_argument('--st_neighbors', type=int, default=30, help='K nearest neighbors to create st graph.')
         parser.add_argument('--dis_sigma', type=int, default=45, help='dis sigma of  nearest neighbors to weight st graph.')
         parser.add_argument('--distance_type', type=str, default='euclidean', help='graph distance type: [euclidean | cosine | correlation].')
 
