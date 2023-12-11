@@ -55,7 +55,6 @@ def setup_seed(seed):
 def cv_train(opt, sc_cells_number, st_cells_number, batches, graph_dict_sc, x_sc, graph_dict_st, x_st, x_sc_a, mask, 
     tensor_graph_dict_st, genes_in_matrix, k, v):
 
-    best_std = 0
     best_loss = 20
     best_fails = 20
 
@@ -105,23 +104,28 @@ def cv_train(opt, sc_cells_number, st_cells_number, batches, graph_dict_sc, x_sc
         if epoch > 30:
             ### Inferencing.
             print('\n===> Start inferencing at Fold %s, Epoch %d'%(k, epoch))
-            decoded_st = model.inference(x_st, tensor_graph_dict_st).cpu().numpy()
-
-            std_list = []
+            decoded_st = model.inference(x_st, tensor_graph_dict_st).cpu()
+            mask_tensor_t = torch.Tensor(np.tile(mask, (x_st.size(dim=0), 1)))
+            Loss_F = torch.nn.MSELoss()
+            loss = Loss_F(mask_tensor_t*decoded_st, x_st)
+            decoded_st = decoded_st.numpy()
+            
             fails = 0
             for gene in v:
                 idx = genes_in_matrix.index(gene)
-                std_list.append(np.std(decoded_st[:, idx]))
-
                 if np.std(decoded_st[:, idx]) == 0: 
                     fails += 1
 
-            print('===> STD median %.4f, fails genes %d'%(statistics.median(std_list), fails))
-            if statistics.median(std_list) > best_std:
-                best_std = statistics.median(std_list)
+            print('===> Rec loss %.4f, fails genes %d'%(loss, fails))
+            if fails < best_fails:
+                best_fails = fails
+                best_loss = loss
+                best_results = decoded_st
+            elif fails == best_fails and loss < best_loss:
+                best_loss = loss
                 best_results = decoded_st
 
-    print('===> Best std: %.4f'%best_std)
+    print('===> Best loss and fails: %.4f, %d'%(best_loss, best_fails))
 
     return best_results
 
@@ -153,7 +157,6 @@ if __name__ == '__main__':
 
     common_st_adata = st_adata[:, raw_shared_gene].copy()
    
-
     setup_seed(6)
 
     # 10 folds to impute a total of 1000 genes, each fold imputes 100 genes.
@@ -219,9 +222,6 @@ if __name__ == '__main__':
     imputed_st_adata = AnnData(Imputed_Genes.to_numpy(), obs=ad_obs, var=ad_var, dtype='float32')
     imputed_st_adata.obsm['spatial'] = common_st_adata.obsm['spatial']
     imputed_st_adata.write('Results/ori_imputed_merfish_m1s3.h5ad')
-
-    Imputed_Genes[raw_shared_gene] = np.array(st_adata[:, raw_shared_gene].X, dtype='float32')
-    Imputed_Genes.to_csv('Results/ori_%s_output_SpaGDA_%s.csv'%(opt.model, time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())))    
 
     Imputed_Genes = Imputed_Genes[sorted(Imputed_Genes.columns)]
     ad_var = pd.DataFrame(index=Imputed_Genes.columns.to_list())
