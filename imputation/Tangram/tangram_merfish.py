@@ -46,7 +46,6 @@ if __name__ == '__main__':
     parser.add_argument('--target_data', default='../gimvi/data/MERFISH1.h5ad', type=str, help='the dataset to be imputed.')
     parser.add_argument('--gene_groups', default='../gimvi/data/gene_groups.json', type=str, help='5 folds gene groups file.')
     parser.add_argument('--save_dir', default='Results', type=str, help='Save dir.')
-    #parser.add_argument('--top_k', default=3000, type=int, help='Number of highly variable genes.')
     parser.add_argument('--sub_sections', default=4, type=int, help='Number of subsection of spatial data.')
     args = parser.parse_args()
 
