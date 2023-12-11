@@ -1,5 +1,7 @@
 The project of SpaGDA for gene expression enhancement.
 
+Set the follow parameters in Option.py, then perform Python3 Train.py to start the 5fold benchmark for SpaGDA.
+
 
 # basic parameters
     name: name of the experiment. It decides where to store samples and models
