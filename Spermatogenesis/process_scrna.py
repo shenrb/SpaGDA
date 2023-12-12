@@ -3,7 +3,7 @@
 # ***********************************
 # Version: 0.1.1                    #
 # Author:  rongboshen               #
-# Email:   rongboshen@tencent.com   #
+# Email:   rongboshen2019@gmail.com #
 # Date:    2022.08.23               #
 # ***********************************
 
@@ -116,25 +116,10 @@ shared_sc_adata.write('data/testes_benchmark.h5ad')
 hvg_idx = select_top_variable_genes(shared_sc_adata.X, 5000)
 sc_hvgs = shared_sc_adata.var_names[hvg_idx].to_list()
 
-
-#sc.pp.highly_variable_genes(shared_sc_adata2, flavor="seurat_v3", n_top_genes=5000)
-#hvgs = shared_sc_adata2.var[shared_sc_adata2.var.highly_variable].index.to_list()
-
 with open('data/sc_hvg_genes_benchmark.json', 'w') as f:
     json.dump(sc_hvgs, f)
 
 sc.pp.normalize_total(shared_sc_adata2, target_sum=1e6)
 sc.pp.log1p(shared_sc_adata2)
 shared_sc_adata2.write('data/testes_benchmark_1e6.h5ad')
-
-
-#new_sc_hvgs = []
-#for g in sc_hvgs:
-#    if g in hvgs:
-#        new_sc_hvgs.append(g)
-
-#print(len(new_sc_hvgs))
-#with open('data/sc_hvg_genes2.json', 'w') as f:
-#    json.dump(new_sc_hvgs, f)
-
 
