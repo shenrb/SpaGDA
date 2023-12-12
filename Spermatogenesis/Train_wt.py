@@ -3,7 +3,7 @@
 # ***********************************
 # Version: 0.1.1                    #
 # Author:  rongboshen               #
-# Email:   rongboshen@tencent.com   #
+# Email:   rongboshen2019@gmail.com #
 # Date:    2022.10.12               #
 # **********************************#
 
@@ -218,18 +218,14 @@ if __name__ == '__main__':
         fold_time = time.time() - start
         print('==> Fold time: %d sec'%fold_time)
 
-    #Imputed_Genes.to_csv('Results/%s_imputed_SpaGDA_dm1_%s.csv'%(opt.model, time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())))
-
     ad_obs = common_st_adata.obs
     ad_var = pd.DataFrame(index=Imputed_Genes.columns.to_list())
 
     imputed_st_adata = AnnData(Imputed_Genes.to_numpy(), obs=ad_obs, var=ad_var, dtype='float32')
     imputed_st_adata.obsm['spatial'] = common_st_adata.obsm['spatial']
-    #imputed_st_adata.write('Results/imputed_testis_dm1.h5ad')
 
     Imputed_Genes[raw_shared_gene] = np.array(st_adata[:, raw_shared_gene].X, dtype='float32')
-    #Imputed_Genes.to_csv('Results/%s_output_SpaGDA_dm1_%s.csv'%(opt.model, time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())))    
-
+   
     Imputed_Genes = Imputed_Genes[sorted(Imputed_Genes.columns)]
     ad_var = pd.DataFrame(index=Imputed_Genes.columns.to_list())
     
