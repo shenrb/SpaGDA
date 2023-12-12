@@ -38,4 +38,4 @@ Option.py includes user-configurable parameters. For the benchmark experiments o
 ![figure_table](https://user-images.githubusercontent.com/8838722/221455638-f0d9582f-648e-460b-a030-de0e7b341383.png)
 
 # Acknowledgements
-This work was supported by self-supporting program of Guangzhou Laboratory (Grant No. ZL-SRPG2200702).
+This work was supported by self-supporting program of Guangzhou Laboratory (Grant No. ZL-SRPG2200702 and Grant No. QNPG23-12).
