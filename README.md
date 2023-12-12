@@ -34,7 +34,7 @@ Train.py is the main program.
 ```python
 python3 Train.py
 ```
-Option.py includes user-configurable parameters. For the experiments in this work, the configurations of involved paramenters are listed in the table.
+Option.py includes user-configurable parameters. For the benchmark experiments of SpaGDA, the configurations of involved paramenters are listed in the table.
 ![figure_table](https://user-images.githubusercontent.com/8838722/221455638-f0d9582f-648e-460b-a030-de0e7b341383.png)
 
 # Acknowledgements
