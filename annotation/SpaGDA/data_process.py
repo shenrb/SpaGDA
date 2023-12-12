@@ -3,7 +3,7 @@
 # ***********************************
 # Version: 0.1.1                    #
 # Author:  rongboshen               #
-# Email:   rongboshen@tencent.com   #
+# Email:   rongboshen2019@gmail.com #
 # Date:    2022.07.06               #
 # ***********************************
 
@@ -44,8 +44,6 @@ obs = pd.DataFrame(index=meta.iloc[:,0])
 var = pd.DataFrame(index=RNA_data.index)
 
 RNA_adata = AnnData(RNA_data.T.to_numpy(), obs=obs, var=var, dtype='float32')
-#RNA_adata_scaled = AnnData(RNA_data_scaled.to_numpy(), obs=obs, var=var, dtype='float32')
-
 RNA_adata.obs['cell_types'] = meta.iloc[:,3].to_list()
 
 del_types = ['Ambiguous', 'Fibroblast', 'Unstable', 'Macrophage', 'Newly formed oligodendrocyte']
@@ -96,8 +94,6 @@ share_genes = Post_RNA_adata.var_names.to_list()
 _Post_RNA_adata = Post_RNA_adata[:,share_genes].copy()
 
 _Post_RNA_adata.write('data/Moffit_RNA.h5ad')
-#RNA_adata_scaled.write('data/Moffit_RNA_scaled.h5ad')
-
 
 # ST dataset.
 
@@ -116,9 +112,6 @@ MERFISH_data = MERFISH_data.T
 cell_count = np.sum(MERFISH_data,axis=0)
 def Log_Norm(x):
     return np.log(((x/np.sum(x))*np.median(cell_count)) + 1)
-
-#MERFISH_data = MERFISH_data.apply(Log_Norm,axis=0)
-#MERFISH_data_scaled = pd.DataFrame(data=st.zscore(MERFISH_data.T),index = MERFISH_data.columns,columns=MERFISH_data.index)
 
 obs = pd.DataFrame(index=MERFISH_data.columns)
 var = pd.DataFrame(index=MERFISH_data.index)
@@ -143,4 +136,3 @@ coord_3d[:,0] = coord_3d[:,0]*(1000/0.22)
 MERFISH_adata.obsm['spatial'] = coord_3d # z,x,y
 
 MERFISH_adata.write('data/MERFISH.h5ad')
-#MERFISH_adata_scaled.write('data/MERFISH_scaled.h5ad')
