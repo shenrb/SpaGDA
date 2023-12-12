@@ -3,7 +3,7 @@
 # ***********************************
 # Version: 0.1.1                    #
 # Author:  rongboshen               #
-# Email:   shen_rongbo@gzlab.ac.cn  #
+# Email:   rongboshen2019@gmail.com #
 # Date:    2023.04.18               #
 # ***********************************
 
@@ -113,9 +113,6 @@ if __name__ == '__main__':
         json.dump(list(shared_genes), fs)
 
     sc.settings.figdir = args.save_dir
-    # normalized
-    #sc.pp.normalize_total(sc_adata)
-    #sc.pp.normalize_total(st_adata)
 
     ## filtered by shared genes
     sc_adata = sc_adata[:, shared_genes]
@@ -157,14 +154,13 @@ if __name__ == '__main__':
     mean_expr_dict = {}
     for i, ct in enumerate(class_names):
         sub_adata = sc_adata[sc_adata.obs.cell_types==ct,:]
-        #mean_expr = np.mean(np.exp(sub_adata.X.toarray())-1, axis=0)
         mean_expr = np.mean(sub_adata.layers['count'].toarray(), axis=0)
         mean_expr_dict[ct] = mean_expr
 
 
     # upsample rare classes
     upsample_types1 = ['pDC']
-    upsample_types2 = ['fibroblast', 'mast', 'neutrophil'] #'COL4A2 fibroblasts', 'PLA2G2A fibroblasts', 'GABARAP fibroblasts', 'fibroblast', 
+    upsample_types2 = ['fibroblast', 'mast', 'neutrophil'] 
     downsamples = ['T CD8', 'T CD4', 'macrophage']
 
     center_sample_cts = ['macrophage', 'T CD8', 'Treg', 'plasmablast', 'endothelial', 'neutrophil', 'mast', 
@@ -186,39 +182,9 @@ if __name__ == '__main__':
         else:
             fsc_adata = ad.concat([fsc_adata, sub_adata], join='outer', fill_value=0)
 
-    '''
-    for i, ct in enumerate(diff_sample_cts):
-        sub_adata = sc_adata[sc_adata.obs.cell_types==ct,:]
-        if ct == 'T CD4':
-            diff_ct = 'T CD8'
-            sub_adata = filter_differs(sub_adata, mean_expr_dict[diff_ct], 0.6)
-        elif ct == 'NK':
-            diff_ct = 'T CD8'
-            sub_adata = filter_differs(sub_adata, mean_expr_dict[diff_ct], 0.4)
-        elif ct == 'mDC':
-            diff_ct = 'macrophage'
-            sub_adata = filter_differs(sub_adata, mean_expr_dict[diff_ct], 0.4)
-        elif ct == 'monocyte':
-            diff_ct = 'macrophage'
-            sub_adata = filter_differs(sub_adata, mean_expr_dict[diff_ct], 0.6)
-        elif ct == 'tumors':
-            diff_ct = 'epithelial'
-            sub_adata = filter_differs(sub_adata, mean_expr_dict[diff_ct], 0.4)        
-        elif ct == 'epithelial':
-            diff_ct = 'tumors'
-            sub_adata = filter_differs(sub_adata, mean_expr_dict[diff_ct], 0.4) 
-
-        fsc_adata = ad.concat([fsc_adata, sub_adata], join='outer', fill_value=0)
-    '''
-
     # draw umap of fsc_adata
-    '''
-    sc.pp.pca(fsc_adata)
-    sc.pp.neighbors(fsc_adata)
-    sc.pl.umap(fsc_adata, color='cell_types', legend_fontsize='x-small', save='_umap.pdf')
-    '''
+
     fsc_adata2 = fsc_adata.copy()
-    #fsc_adata2.X = np.exp(fsc_adata2.X.toarray())-1
     fsc_adata2.X = fsc_adata2.layers['count']
     sc.pp.normalize_total(fsc_adata2)
     sc.pp.pca(fsc_adata2)
@@ -233,15 +199,12 @@ if __name__ == '__main__':
     adata_upsample2 = fsc_adata[fsc_adata.obs['cell_types']=='neutrophil',:]
     adata_normal = fsc_adata[~fsc_adata.obs['cell_types'].isin(['pDC', 'neutrophil']),:]
 
-    #features_upsample1 = np.array(np.exp(adata_upsample1.X.toarray())-1, dtype=np.float32)
-    #features_upsample2 = np.array(np.exp(adata_upsample2.X.toarray())-1, dtype=np.float32)
     features_upsample1 = np.array(adata_upsample1.layers['count'].toarray(), dtype=np.float32)
     features_upsample2 = np.array(adata_upsample2.layers['count'].toarray(), dtype=np.float32)
 
     labels_upsample1 = adata_upsample1.obs['cell_types'].to_list()
     labels_upsample2 = adata_upsample2.obs['cell_types'].to_list()
 
-    #features_normal = np.array(np.exp(adata_normal.X.toarray())-1, dtype=np.float32)
     features_normal = np.array(adata_normal.layers['count'].toarray(), dtype=np.float32)
     labels_normal = adata_normal.obs['cell_types'].to_list()
 
@@ -279,53 +242,5 @@ if __name__ == '__main__':
 
     print('post scRNA dataset shape: \n', post_sc_adata.shape)
     print('post scRNA dataset refined cell type distribution: \n', post_sc_adata.obs['cell_types'].value_counts())
-
-
-    '''
-    st_features = np.array(st_adata.X)
-    for i in range(st_features.shape[0]):
-        norm = np.linalg.norm(st_features[i])
-        if norm != 0:
-            st_features[i] = st_features[i]/norm
-    st_adata.X = st_features
-    st_adata.write(os.path.join(args.save_dir, 'nsclc_cc.h5ad'))
-
-
-
-    # figure 5 need resize
-    # figure 16 need resize y axis
-    # merge figures
-    files = os.listdir(os.path.join(args.dataset, 'figures'))
-    files.sort()
-
-
-    # all image crop zero edges and resized to (5472, 3650)
-
-    for j,file in enumerate(files):
-        img = cv2.imread(os.path.join(args.dataset, 'figures', file)) # height * width
-
-        img_arr = np.sum(img, axis=2)
-        f,g = np.nonzero(np.sum(img_arr, axis=0)), np.nonzero(np.sum(img_arr, axis=1))
-        minx, maxx = np.min(f), np.max(f)
-        miny, maxy = np.min(g), np.max(g)
-        img = img[miny:maxy+1, minx:maxx+1, :]
-        img = cv2.resize(img, dsize=(5472, 3650), interpolation=cv2.INTER_CUBIC) # dsize = resized_width * resized_height
-
-        if j%4 == 0:
-            tmp = img
-        else:
-            tmp = cv2.hconcat([tmp, img])
-
-        if j == 3:
-            merged_image = tmp
-
-        if j%4 == 3 and j > 3:
-            
-            merged_image = cv2.vconcat([tmp, merged_image])
-
-    print(merged_image.shape)
-    cv2.imwrite(os.path.join(args.save_dir, 'merged_image.jpg'), merged_image)
-    '''
-
 
 
