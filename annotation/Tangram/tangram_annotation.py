@@ -3,7 +3,7 @@
 # ***********************************
 # Version: 0.1.1                    #
 # Author:  rongboshen               #
-# Email:   rongboshen@tencent.com   #
+# Email:   rongboshen2019@gmail.com #
 # Date:    2022.08.10               #
 # ***********************************
 
@@ -54,7 +54,7 @@ if __name__ == '__main__':
     annotation_list.sort()
     # load the target dataset.
 
-    samples = [1,2,7]
+    samples = [1]
     tangram_time = []
     for sid in samples:
         MERFISH_adata = sc.read(os.path.join(args.target_dir, 'MERFISH_%d.h5ad'%sid))
@@ -115,52 +115,4 @@ if __name__ == '__main__':
 
         result_df = pd.DataFrame(results, columns=annotation_list, index=common_MERFISH_adata.obs_names.to_list())
         result_df.to_csv('Results/predictions_%d.csv'%sid)
-
-        '''
-        # The spatial data has overmuch cells, thus split into 10 subsets.
-  
-        sections = [int(s) for s in np.linspace(0, spatial_cells, args.sub_sections+1)]
-        for i in range(args.sub_sections):
-            subsection_common_MERFISH_adata = common_MERFISH_adata[sections[i]:sections[i+1],:]
-            Normal_RNA_adata = _RNA_adata.copy()
-            print('==> Subsection of Spatial dataset with shape:', subsection_common_MERFISH_adata.shape)
-
-            # training genes are saved in `uns``training_genes` of both single cell and spatial Anndatas.
-            # overlapped genes are saved in `uns``overlap_genes` of both single cell and spatial Anndatas.
-            # uniform based density prior is calculated and saved in `obs``uniform_density` of the spatial Anndata.
-            # rna count based density prior is calculated and saved in `obs``rna_count_based_density` of the spatial Anndata.
-            tg.pp_adatas(Normal_RNA_adata, subsection_common_MERFISH_adata, genes=list(anchors))
-
-            ad_map = tg.map_cells_to_space(Normal_RNA_adata, subsection_common_MERFISH_adata, mode="cells", density_prior='rna_count_based', num_epochs=400, device="cuda:0" )
-            # mode="clusters", density_prior='uniform'
-            # cluster_label='cell_subclass',  # .obs field w cell types
-            # device='cpu',device="cuda:0"
-            # The mapping results are stored in the returned AnnData structure, saved as ad_map, structured as following: 
-            # -> The cell-by-spot matrix X contains the probability of cell i to be in spot j. 
-            # -> The obs dataframe contains the metadata of the single cells. 
-            # -> The var dataframe contains the metadata of the spatial data. 
-            # -> The uns dictionary contains a dataframe with various information about the training genes (saved as train_genes_df).
-
-            # If the mapping mode is 'cells', we can now generate the “new spatial data” using the mapped single cell: this is done via project_genes. 
-            # -> The function accepts as input a mapping (adata_map) and corresponding single cell data (adata_sc). 
-            # -> The result is a voxel-by-gene AnnData, formally similar to adata_st, but containing gene expression from the mapped single cell data rather than Visium. 
-            # -> For downstream analysis, we always replace adata_st with the corresponding ad_ge.
-
-            ad_ge = tg.project_genes(adata_map=ad_map, adata_sc=Normal_RNA_adata)
-            vlower = [g.lower() for g in v]
-            print(len(set(ad_ge.var_names.to_list()) & set(vlower)), ad_ge.shape, )
-            #print(ad_ge.var_names.to_list())
-
-            #df_all_genes = tg.compare_spatial_geneexp(ad_ge, subsection_common_MERFISH_adata, Normal_RNA_adata)
-
-            # It is convenient to compute the similarity scores of all genes, which can be done by compare_spatial_geneexp. 
-            # This function accepts two spatial AnnDatas (ie voxel-by-gene), and returns a dataframe with simlarity scores for all genes. Training genes are flagged by the boolean field is_training. 
-            # If we also pass single cell AnnData to compare_spatial_geneexp function like below, 
-            #    a dataframe with additional sparsity columns - sparsity_sc (single cell data sparsity) and sparsity_diff (spatial data sparsity - single cell data sparsity) will return. 
-            #    This is required if we want to call plot_test_scores function later with the returned datafrme from compare_spatial_geneexp function.
-
-            tangram_imputed = ad_ge[:, vlower]
-            print('tangram_imputed shape:', tangram_imputed.shape, tangram_imputed.X.shape, Imputed_Genes.iloc[sections[i]:sections[i+1],:].shape, Imputed_Genes.iloc[sections[i]:sections[i+1],:][v].shape)
-            Imputed_Genes.iloc[sections[i]:sections[i+1],:][v] = tangram_imputed.X.toarray()
-        '''
 
