@@ -15,12 +15,19 @@ library(patchwork)
 library(MLmetrics)
 library(CellID)
 
-ref_data <- ScaleData(ref_data, features = rownames(ref_data))
+query_data <- readRDS("MERFISH.rds")
+ref_data <- readRDS("Moffit_RNA.rds")
+Gene_groups <- fromJSON(file = "gene_groups.json")
+genes.leaveout <- intersect(rownames(query_data),rownames(ref_data))
+
+query_data <- ScaleData(query_data, features = genes.leaveout)
+ref_data <- ScaleData(ref_data, features = genes.leaveout)
+
+
 ref_data <- RunMCA(ref_data)
 ref_cell_gs <- GetCellGeneSet(ref_data, dim=1:50, n.features=200)
 ref_group_gs <- GetGroupGeneSet(ref_data, dim=1:50, n.features=200, group.by="celltype")
 query_data <- FindVariableFeatures(query_data)
-query_data <- ScaleData(query_data)
 query_data <- RunMCA(query_data)
 
 acc <- c()
