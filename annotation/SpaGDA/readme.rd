@@ -1,1 +1,1 @@
-The project of cell type identification for SpaGDA.
+The script of cell type identification for SpaGDA.
