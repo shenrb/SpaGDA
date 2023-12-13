@@ -1,3 +1,12 @@
+# -*- coding: utf-8 -*-
+# ***********************************
+# Version: 0.1.1                    #
+# Author:  rongboshen               #
+# Email:   rongboshen2019@gmail.com #
+# Date:    2022.08.17               #
+# ***********************************
+
+
 library(tidyverse)
 library(Matrix)
 library(Seurat)
