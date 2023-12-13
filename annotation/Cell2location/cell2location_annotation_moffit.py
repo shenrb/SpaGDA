@@ -3,7 +3,7 @@
 # ***********************************
 # Version: 0.1.1                    #
 # Author:  rongboshen               #
-# Email:   rongboshen@tencent.com   #
+# Email:   rongboshen2019@gmail.com #
 # Date:    2022.08.15               #
 # ***********************************
 
@@ -118,8 +118,8 @@ def select_top_variable_genes(data_mtx, top_k):
 if __name__ == '__main__':
     # Set arguments and hyper-parameters.
     parser = argparse.ArgumentParser(description='run 5 folds cross validation for cell2location')
-    parser.add_argument('--source_data', default='../../tangram/3d/data/Moffit_RNA.h5ad', type=str, help='the reference scRNA dataset.')
-    parser.add_argument('--target_dir', default='../../tangram/3d/data', type=str, help='the dataset to be annotation.')
+    parser.add_argument('--source_data', default='../Tangram/data/Moffit_RNA.h5ad', type=str, help='the reference scRNA dataset.')
+    parser.add_argument('--target_dir', default='../Tangram/data', type=str, help='the dataset to be annotation.')
     parser.add_argument('--save_dir', default='Results', type=str, help='Save dir.')
     #parser.add_argument('--top_k', default=3000, type=int, help='Number of highly variable genes.')
     parser.add_argument('--sub_sections', default=4, type=int, help='Number of sub_sections.')
@@ -141,7 +141,7 @@ if __name__ == '__main__':
     inf_aver = fetch_ref(RNA_adata)
     print('Finished reference scRNA dataset process...')
 
-    samples = [1,2,7]
+    samples = [1]
     for sid in samples:
         MERFISH_adata = sc.read(os.path.join(args.target_dir, 'MERFISH_%d.h5ad'%sid))
         MERFISH_adata.X = np.array(MERFISH_adata.X, dtype=np.int32)
