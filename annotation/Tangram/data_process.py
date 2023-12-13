@@ -3,7 +3,7 @@
 # ***********************************
 # Version: 0.1.1                    #
 # Author:  rongboshen               #
-# Email:   rongboshen@tencent.com   #
+# Email:   rongboshen2019@gmail.com #
 # Date:    2022.08.10               #
 # ***********************************
 
@@ -61,7 +61,7 @@ _RNA_adata.write('data/Moffit_RNA.h5ad')
 MERFISH = pd.read_csv('/data/dataset/hypothalamic_merfish/Moffitt_and_Bambah-Mukku_et_al_merfish_all_cells.csv')
 #Select  the 1st replicate, Naive state
 
-samples = [1,2,7]
+samples = [1]
 
 for sid in samples:
     MERFISH_sample = MERFISH.loc[MERFISH['Animal_ID']==sid,:]
