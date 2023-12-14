@@ -127,7 +127,7 @@ class TrainOptions(BaseOptions):
         parser.add_argument('--norm', type=str, default='instance', help='instance normalization or batch normalization [instance | batch | none]')
 
         # Training parameters
-        parser.add_argument('--phase', type=str, default='train', help='train, val, test, etc')
+        parser.add_argument('--phase', type=str, default='train', help='train, test, etc')
         parser.add_argument('--classes', type=int, default=9, help='number of classes for CLS branch')
         parser.add_argument('--n_epochs', type=int, default=40, help='number of epochs with the initial learning rate')
         parser.add_argument('--beta1', type=float, default=0.5, help='momentum term of adam')
@@ -165,7 +165,7 @@ class TestOptions(BaseOptions):
         parser.add_argument('--st_data', type=str, default='/data/dataset/hypothalamic_merfish/sample1.h5ad', help='target spatial transcriptomic dataset, h5ad format.')
 
         # Test parameters
-        parser.add_argument('--phase', type=str, default='test', help='train, val, test, etc')
+        parser.add_argument('--phase', type=str, default='test', help='train, test, etc')
         parser.add_argument('--eval', action='store_true', help='use eval mode during test time.')
 
         # Result saving parameters
