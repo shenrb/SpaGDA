@@ -8,8 +8,7 @@
 # Date:    2023.07.06               #
 # ***********************************
 
-# cited from https://doi.org/10.1038/s41467-022-35288-0 
-# source code of this script in https://github.com/TencentAILabHealthcare/spatialID
+# cited from the source code in https://github.com/TencentAILabHealthcare/spatialID
 
 import os
 import time
