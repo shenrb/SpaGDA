@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+
 import os
 import time
 import random
@@ -27,9 +28,9 @@ torch.backends.cudnn.deterministic = True
 
 config = {
     'data': {
-        'data_dir': 'dataset/MERFISH/',
-        'save_dir': 'result/MERFISH/',
-        'dataset': 'MERFISH',
+        'data_dir': 'dataset/HPR/',
+        'save_dir': 'result/HPR/',
+        'dataset': 'HPR',
     },
     'preprocess': {
         'filter_mt': True,
@@ -158,8 +159,8 @@ def spatial_classification_tool(config, data_name):
     adata.obs['pseudo_class'] = pd.Categorical([label_names[i] for i in adata.obsm['pseudo_label'].argmax(1)])
     adata.uns['pseudo_classes'] = label_names
 
-    # Compute accuracy (only for MERFISH).
-    if dataset == 'MERFISH':
+    # Compute accuracy (only for HPR).
+    if dataset == 'HPR':
         indices = np.where(~adata.obs['subclass'].isin(['L4/5 IT', 'L6 IT Car3', 'PVM', 'other']))[0]
         adjusted_pr = adata.obs['pseudo_class'][indices].to_numpy()
         adjusted_gt = adata.obs['subclass'][indices].replace(['Micro'], ['Macrophage']).to_numpy()
@@ -208,7 +209,7 @@ def spatial_classification_tool(config, data_name):
     print('\n==> Inferencing...')
     predictions = trainer.valid(data)
     celltype_pred = pd.Categorical([adata.uns['pseudo_classes'][i] for i in predictions.argmax(1)])
-    if dataset == 'MERFISH':
+    if dataset == 'HPR':
         indices = np.where(~adata.obs['subclass'].isin(['L4/5 IT', 'L6 IT Car3', 'PVM', 'other']))[0]
         adjusted_pr = celltype_pred[indices].to_numpy()
         adjusted_gt = adata.obs['subclass'][indices].replace(['Micro'], ['Macrophage']).to_numpy()
@@ -239,8 +240,7 @@ def spatial_classification_tool(config, data_name):
 
 
 if __name__ == '__main__':
-    data_list = ['mouse1_sample1', 'mouse1_sample2', 'mouse1_sample3', 'mouse1_sample4', 'mouse1_sample5', 'mouse1_sample6',
-                 'mouse2_sample1', 'mouse2_sample2', 'mouse2_sample3', 'mouse2_sample4', 'mouse2_sample5', 'mouse2_sample6']
+    data_list = ['MERFISH1']
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_name', choices=data_list)
     args = parser.parse_args()
