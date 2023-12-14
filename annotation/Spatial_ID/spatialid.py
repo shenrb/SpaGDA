@@ -168,7 +168,7 @@ def spatial_classification_tool(config, data_name):
     adata.uns['pseudo_classes'] = label_names
 
     # Compute accuracy (only for HPR).
-    if dataset == 'Hyp_3D':
+    if dataset == 'HPR':
         indices = np.where(~adata.obs['Cell_class'].isin(['Ambiguous']))[0]
         adjusted_pr = adata.obs['pseudo_class'][indices].to_numpy()
         adjusted_gt = adata.obs['Cell_class'][indices].replace(
