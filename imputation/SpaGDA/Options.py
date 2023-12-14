@@ -43,7 +43,7 @@ class BaseOptions():
         # additional parameters
         parser.add_argument('--verbose', action='store_true', help='if specified, print more debugging information')
         parser.add_argument('--load_epoch', type=str, default='latest', help='which epoch to load? set to latest to use latest cached model')
-        parser.add_argument('--gene_groups', type=str,default='data/gene_groups.json', help='if specified, print more debugging information')
+        parser.add_argument('--gene_groups', type=str,default='data/gene_groups.json', help='gene group information')
 
 
         self.initialized = True
@@ -120,14 +120,14 @@ class TrainOptions(BaseOptions):
 
         # Discriminator parameters
         parser.add_argument('--dis_model', type=str, default='mlp', help='[mlp | conv]')
-        parser.add_argument('--ndf', type=int, default=16, help='# of discriminator (D, netD) filters in the first conv layer.')
-        parser.add_argument('--ndf_di', type=int, default=16, help='# of discriminator (D, netD) filters in the first conv layer.')
-        parser.add_argument('--n_layers_D', type=int, default=1, help='netD n_layers')
-        parser.add_argument('--n_layers_D_di', type=int, default=1, help='netD n_layers')
+        parser.add_argument('--ndf', type=int, default=16, help='# of discriminator netDl filters in the first conv layer.')
+        parser.add_argument('--ndf_di', type=int, default=16, help='# of discriminator netDi filters in the first conv layer.')
+        parser.add_argument('--n_layers_D', type=int, default=1, help='netDl n_layers')
+        parser.add_argument('--n_layers_D_di', type=int, default=1, help='netDi n_layers')
         parser.add_argument('--norm', type=str, default='instance', help='instance normalization or batch normalization [instance | batch | none]')
 
         # Training parameters
-        parser.add_argument('--phase', type=str, default='train', help='train, val, test, etc')
+        parser.add_argument('--phase', type=str, default='train', help='train, test, etc')
         parser.add_argument('--n_epochs', type=int, default=40, help='number of epochs with the initial learning rate')
         parser.add_argument('--beta1', type=float, default=0.5, help='momentum term of adam')
         parser.add_argument('--lr', type=float, default=0.0002, help='initial learning rate for adam')
@@ -168,7 +168,7 @@ class TestOptions(BaseOptions):
         parser.add_argument('--st_data', type=str, default='.h5ad', help='target spatial transcriptomic dataset, h5ad format.')
 
         # Test parameters
-        parser.add_argument('--phase', type=str, default='test', help='train, val, test, etc')
+        parser.add_argument('--phase', type=str, default='test', help='train, test, etc')
         parser.add_argument('--eval', action='store_true', help='use eval mode during test time.')
 
         # Result saving parameters
