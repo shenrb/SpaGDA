@@ -48,7 +48,7 @@ config = {
         'drop_rate': 0,
     },
     'transfer': {
-        'dnn_model': 'dnn_model/checkpoint_MERFISH_s.t7',
+        'dnn_model': 'dnn_model/checkpoint_Hyp-3D_b.t7',
         'gpu': '0',
         'batch_size': 4096,
     },
@@ -168,10 +168,18 @@ def spatial_classification_tool(config, data_name):
     adata.uns['pseudo_classes'] = label_names
 
     # Compute accuracy (only for HPR).
-    if dataset == 'HPR':
-        indices = np.where(~adata.obs['subclass'].isin(['L4/5 IT', 'L6 IT Car3', 'PVM', 'other']))[0]
+    if dataset == 'Hyp_3D':
+        indices = np.where(~adata.obs['Cell_class'].isin(['Ambiguous']))[0]
         adjusted_pr = adata.obs['pseudo_class'][indices].to_numpy()
-        adjusted_gt = adata.obs['subclass'][indices].replace(['Micro'], ['Macrophage']).to_numpy()
+        adjusted_gt = adata.obs['Cell_class'][indices].replace(
+            ['Endothelial 1', 'Endothelial 2', 'Endothelial 3',
+             'OD Immature 1', 'OD Immature 2',
+             'OD Mature 1', 'OD Mature 2', 'OD Mature 3', 'OD Mature 4',
+             'Astrocyte', 'Pericytes'], 
+            ['Endothelial', 'Endothelial', 'Endothelial',
+             'Immature oligodendrocyte', 'Immature oligodendrocyte',
+             'Mature oligodendrocyte', 'Mature oligodendrocyte', 'Mature oligodendrocyte', 'Mature oligodendrocyte',
+             'Astrocytes', 'Mural']).to_numpy()
         acc = (adjusted_pr == adjusted_gt).sum() / len(indices) * 100.0
         print('  %s Acc (transfer only): %.2f%%' % (data_name, acc))
 
@@ -218,9 +226,17 @@ def spatial_classification_tool(config, data_name):
     predictions = trainer.valid(data)
     celltype_pred = pd.Categorical([adata.uns['pseudo_classes'][i] for i in predictions.argmax(1)])
     if dataset == 'HPR':
-        indices = np.where(~adata.obs['subclass'].isin(['L4/5 IT', 'L6 IT Car3', 'PVM', 'other']))[0]
+        indices = np.where(~adata.obs['Cell_class'].isin(['Ambiguous']))[0]
         adjusted_pr = celltype_pred[indices].to_numpy()
-        adjusted_gt = adata.obs['subclass'][indices].replace(['Micro'], ['Macrophage']).to_numpy()
+        adjusted_gt = adata.obs['Cell_class'][indices].replace(
+            ['Endothelial 1', 'Endothelial 2', 'Endothelial 3',
+             'OD Immature 1', 'OD Immature 2',
+             'OD Mature 1', 'OD Mature 2', 'OD Mature 3', 'OD Mature 4',
+             'Astrocyte', 'Pericytes'], 
+            ['Endothelial', 'Endothelial', 'Endothelial',
+             'Immature oligodendrocyte', 'Immature oligodendrocyte',
+             'Mature oligodendrocyte', 'Mature oligodendrocyte', 'Mature oligodendrocyte', 'Mature oligodendrocyte',
+             'Astrocytes', 'Mural']).to_numpy()
         acc = (adjusted_pr == adjusted_gt).sum() / len(indices) * 100.0
         print('  %s Acc (transfer+GDAE): %.2f%%' % (data_name, acc))
 
