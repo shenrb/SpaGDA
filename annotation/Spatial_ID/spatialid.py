@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+# ***********************************
+# Version: 0.1.1                    #
+# Author:  rongboshen               #
+# Email:   rongboshen2019@gmail.com #
+# Date:    2023.07.06               #
+# ***********************************
 
-
-
-
-# cited from https://github.com/TencentAILabHealthcare/spatialID
-
+# cited from https://doi.org/10.1038/s41467-022-35288-0 
+# source code of this script in https://github.com/TencentAILabHealthcare/spatialID
 
 import os
 import time
