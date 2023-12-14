@@ -1,6 +1,6 @@
 The project of SpaGDA for gene expression enhancement.
 
-Set the follow parameters in Option.py, then perform Python3 Train.py to start the 5fold benchmark for SpaGDA.
+Set the follow parameters in Option.py, then perform Python3 Train.py to start the 5-fold benchmark for SpaGDA.
 
 
 # basic parameters
@@ -9,7 +9,7 @@ Set the follow parameters in Option.py, then perform Python3 Train.py to start t
     checkpoints_dir: models are saved here
 
 # Model Generator parameters
-    model: chooses which model to use. [cycle_gan | gan]
+    model: chooses which model to use. [gan]
     input_dim: Dim of input, using HVG
     feat_hidden1: Dim of G-encoder hidden layer 1
     feat_hidden2: Dim of G-encoder hidden layer 2
@@ -21,7 +21,7 @@ Set the follow parameters in Option.py, then perform Python3 Train.py to start t
 # additional parameters
     verbose: if specified, print more debugging information
     load_epoch: which epoch to load? set to latest to use latest cached model
-    gene_groups: if specified, print more debugging information
+    gene_groups: gene group informations for 5-fold.
 
 # Training data parameters
     sc_data: source scRNA-seq dataset, h5ad format
@@ -29,14 +29,14 @@ Set the follow parameters in Option.py, then perform Python3 Train.py to start t
 
 # Discriminator parameters
     dis_model: [mlp | conv]
-    ndf: # of discriminator (D, netD) filters in the first conv layer
-    ndf_di: # of discriminator (D, netD) filters in the first conv layer
-    n_layers_D: netD n_layers
-    n_layers_D_di: netD n_layers
+    ndf: # of discriminator netDl filters in the first conv layer
+    ndf_di: # of discriminator netDi filters in the first conv layer
+    n_layers_D: netDl n_layers for conv
+    n_layers_D_di: netDi n_layers for conv
     norm: instance normalization or batch normalization [instance | batch | none]
 
 # Training parameters
-    phase: train, val, test, etc
+    phase: train, test, etc
     n_epochs: number of epochs with the initial learning rate
     beta1: momentum term of adam
     lr: initial learning rate for adam
