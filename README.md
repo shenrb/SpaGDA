@@ -1,8 +1,7 @@
 # Feature
 SpaGDA is a unified deep learning-based graph domain adaptation for gene expression enhancement and cell type identification in large-scale spatial resolved transcriptomics. Two sub-directories  (imputation and annotation) include benchmark experiments for SpaGDA and control methods. Two sub-directories (MOP and Spermatogenesis) present the application of gene expression enhancement on MOp dataset and Testis dataset by SpaGDA, respectively. The sub-directory (NSCLC) present the application of cell type identification on NSCLC dataset by SpaGDA. Developed by the author R. Shen (rongboshen2019@gmail.com). 
 
-![fig1](https://github.com/shenrb/SpaGDA/assets/8838722/d2be7115-c907-4d88-a0ff-6444b1f67f7f)
-
+![fig1](https://github.com/shenrb/SpaGDA/assets/8838722/37ce1404-1a50-40a7-b764-785be1daf2cc)
 
 # Pre-requirements
 All analyses presented in the paper were performed in a workstation with 40 Gb RAM memory, 10 cores of 2.5 GHz Intel Xeon Platinum 8255C CPU, and a Nvidia Tesla V100 GPU with 32 Gb memory. And the following python (v3.9) packages support for SpaGDA are required: numpy==1.22.4, pandas==1.4.3, scipy==1.9.0, matplotlib==3.5.3, seaborn==0.11.2, scikit-learn==1.1.2, torch==1.21.1, scanpy==1.9.1, anndata==0.8.0.
